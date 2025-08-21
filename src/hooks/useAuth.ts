@@ -18,8 +18,6 @@ interface AuthActions {
   clearError: () => void;
 }
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || '';
-
 export function useAuth(): AuthState & AuthActions {
   const [state, setState] = useState<AuthState>({
     user: null,
@@ -54,7 +52,7 @@ export function useAuth(): AuthState & AuthActions {
   const apiCall = useCallback(async (endpoint: string, options: RequestInit = {}) => {
     const token = getStoredToken();
 
-    const response = await fetch(`${API_BASE_URL}/api/auth${endpoint}`, {
+    const response = await fetch(`/api/auth${endpoint}`, {
       ...options,
       headers: {
         'Content-Type': 'application/json',

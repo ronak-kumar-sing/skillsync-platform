@@ -27,14 +27,14 @@ export default function Home() {
               Connect, learn, and grow with AI-powered peer-to-peer learning through instant video calls
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/dashboard">
+              <Link href="/auth">
                 <GlassButton variant="primary" size="lg">
-                  Go to Dashboard
+                  Get Started
                 </GlassButton>
               </Link>
-              <Link href="/components-demo">
+              <Link href="/dashboard">
                 <GlassButton variant="ghost" size="lg">
-                  View Components Demo
+                  Go to Dashboard
                 </GlassButton>
               </Link>
             </div>
@@ -47,7 +47,7 @@ export default function Home() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
             >
-              <GlassCard hover className="p-6 h-full">
+              <GlassCard interactive className="p-6 h-full">
                 <div className="text-center space-y-4">
                   <div className="w-16 h-16 bg-primary-500/20 rounded-full flex items-center justify-center mx-auto">
                     <svg className="w-8 h-8 text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -67,7 +67,7 @@ export default function Home() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
             >
-              <GlassCard hover className="p-6 h-full">
+              <GlassCard interactive className="p-6 h-full">
                 <div className="text-center space-y-4">
                   <div className="w-16 h-16 bg-secondary-500/20 rounded-full flex items-center justify-center mx-auto">
                     <svg className="w-8 h-8 text-secondary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -87,7 +87,7 @@ export default function Home() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.6 }}
             >
-              <GlassCard hover className="p-6 h-full">
+              <GlassCard interactive className="p-6 h-full">
                 <div className="text-center space-y-4">
                   <div className="w-16 h-16 bg-accent-500/20 rounded-full flex items-center justify-center mx-auto">
                     <svg className="w-8 h-8 text-accent-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -141,12 +141,16 @@ export default function Home() {
               Join thousands of learners and start your journey today. Connect with peers, share knowledge, and grow together.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <GlassButton variant="primary" size="lg">
-                Get Started
-              </GlassButton>
-              <GlassButton variant="ghost" size="lg">
-                Learn More
-              </GlassButton>
+              <Link href="/auth">
+                <GlassButton variant="primary" size="lg">
+                  Get Started
+                </GlassButton>
+              </Link>
+              <Link href="/components-demo">
+                <GlassButton variant="ghost" size="lg">
+                  Learn More
+                </GlassButton>
+              </Link>
             </div>
           </motion.div>
         </div>

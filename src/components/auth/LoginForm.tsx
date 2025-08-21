@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { LoginRequest } from '@/types';
+import { GlassButton, GlassInput } from '@/components/ui';
 
 interface LoginFormProps {
   onSuccess?: () => void;
@@ -66,61 +67,80 @@ export function LoginForm({ onSuccess, className = '' }: LoginFormProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className={`space-y-4 ${className}`}>
+    <form onSubmit={handleSubmit} className={`space-y-6 ${className}`}>
       <div>
-        <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+        <label htmlFor="email" className="block text-sm font-medium text-white mb-2">
           Email
         </label>
-        <input
+        <GlassInput
           type="email"
           id="email"
           name="email"
           value={formData.email}
           onChange={handleChange}
-          className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${formErrors.email ? 'border-red-500' : 'border-gray-300'
-            }`}
           placeholder="Enter your email"
           disabled={isLoading}
+          className={formErrors.email ? 'border-red-500/50' : ''}
         />
         {formErrors.email && (
-          <p className="mt-1 text-sm text-red-600">{formErrors.email}</p>
+          <p className="mt-1 text-sm text-red-400">{formErrors.email}</p>
         )}
       </div>
 
       <div>
-        <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+        <label htmlFor="password" className="block text-sm font-medium text-white mb-2">
           Password
         </label>
-        <input
+        <GlassInput
           type="password"
           id="password"
           name="password"
           value={formData.password}
           onChange={handleChange}
-          className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${formErrors.password ? 'border-red-500' : 'border-gray-300'
-            }`}
           placeholder="Enter your password"
           disabled={isLoading}
+          className={formErrors.password ? 'border-red-500/50' : ''}
         />
         {formErrors.password && (
-          <p className="mt-1 text-sm text-red-600">{formErrors.password}</p>
+          <p className="mt-1 text-sm text-red-400">{formErrors.password}</p>
         )}
       </div>
 
       {error && (
-        <div className="p-3 bg-red-50 border border-red-200 rounded-md">
-          <p className="text-sm text-red-600">{error}</p>
+        <div className="p-4 bg-red-500/10 border border-red-500/20 rounded-lg">
+          <p className="text-sm text-red-300">{error}</p>
         </div>
       )}
 
-      <button
+      <GlassButton
         type="submit"
+        variant="primary"
+        className="w-full"
         disabled={isLoading}
-        className={`w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed ${isLoading ? 'opacity-50 cursor-not-allowed' : ''
-          }`}
       >
         {isLoading ? 'Signing in...' : 'Sign In'}
-      </button>
+      </GlassButton>
+
+      {/* Additional Links */}
+      <div className="flex justify-between text-sm">
+        <button
+          type="button"
+          className="text-white/60 hover:text-white transition-colors"
+          disabled={isLoading}
+        >
+          Forgot password?
+        </button>
+        <span className="text-white/60">
+          Need help?{' '}
+          <button
+            type="button"
+            className="text-primary-400 hover:text-primary-300 transition-colors"
+            disabled={isLoading}
+          >
+            Contact support
+          </button>
+        </span>
+      </div>
     </form>
   );
 }

@@ -81,7 +81,7 @@ export async function PUT(request: NextRequest) {
     );
 
     // Add security headers
-    const securityHeaders = securityHeadersMiddleware();
+    const securityHeaders = securityHeadersMiddleware(request);
     Object.entries(securityHeaders).forEach(([key, value]) => {
       response.headers.set(key, value);
     });

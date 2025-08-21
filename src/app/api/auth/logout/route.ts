@@ -13,7 +13,7 @@ export async function POST(_request: NextRequest) {
     );
 
     // Add security headers
-    const securityHeaders = securityHeadersMiddleware();
+    const securityHeaders = securityHeadersMiddleware(_request);
     Object.entries(securityHeaders).forEach(([key, value]) => {
       response.headers.set(key, value);
     });

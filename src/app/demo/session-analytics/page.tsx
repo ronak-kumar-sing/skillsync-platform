@@ -244,92 +244,92 @@ export default function SessionAnalyticsDemo() {
                     </div>
                   </GlassCard>
                 )}
-            </div>
+              </GlassCard>
             </div>
           )}
+        </div>
+
+        {/* Implementation Highlights */}
+        <GlassCard className="p-6">
+          <h2 className="text-2xl font-bold text-white mb-4">Implementation Highlights</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="space-y-2">
+              <h3 className="text-lg font-semibold text-white">🏗️ Architecture</h3>
+              <ul className="text-sm text-gray-300 space-y-1">
+                <li>• RESTful API endpoints for all analytics</li>
+                <li>• Comprehensive service layer with business logic</li>
+                <li>• Type-safe interfaces and data models</li>
+                <li>• Efficient database queries with pagination</li>
+              </ul>
+            </div>
+            <div className="space-y-2">
+              <h3 className="text-lg font-semibold text-white">🎨 User Experience</h3>
+              <ul className="text-sm text-gray-300 space-y-1">
+                <li>• Responsive glassmorphism design</li>
+                <li>• Interactive charts and visualizations</li>
+                <li>• Real-time data updates</li>
+                <li>• Intuitive filtering and search</li>
+              </ul>
+            </div>
+            <div className="space-y-2">
+              <h3 className="text-lg font-semibold text-white">🔧 Technical Features</h3>
+              <ul className="text-sm text-gray-300 space-y-1">
+                <li>• Comprehensive test coverage</li>
+                <li>• Error handling and validation</li>
+                <li>• Performance optimization</li>
+                <li>• Scalable data processing</li>
+              </ul>
+            </div>
+          </div>
+        </GlassCard>
+
+        {/* API Endpoints */}
+        <GlassCard className="p-6">
+          <h2 className="text-2xl font-bold text-white mb-4">API Endpoints</h2>
+          <div className="space-y-4">
+            <div className="bg-white/5 rounded-lg p-4">
+              <h3 className="font-semibold text-white mb-2">Session Analytics</h3>
+              <div className="space-y-2 text-sm">
+                <div className="flex items-center gap-2">
+                  <span className="bg-green-500/20 text-green-300 px-2 py-1 rounded text-xs">GET</span>
+                  <code className="text-gray-300">/api/sessions/analytics</code>
+                  <span className="text-gray-400">- Comprehensive user analytics</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="bg-green-500/20 text-green-300 px-2 py-1 rounded text-xs">GET</span>
+                  <code className="text-gray-300">/api/sessions/insights</code>
+                  <span className="text-gray-400">- Personalized learning insights</span>
+                </div>
+              </div>
+            </div>
+            <div className="bg-white/5 rounded-lg p-4">
+              <h3 className="font-semibold text-white mb-2">Session History</h3>
+              <div className="space-y-2 text-sm">
+                <div className="flex items-center gap-2">
+                  <span className="bg-green-500/20 text-green-300 px-2 py-1 rounded text-xs">GET</span>
+                  <code className="text-gray-300">/api/sessions/history</code>
+                  <span className="text-gray-400">- Searchable session history</span>
+                </div>
+              </div>
+            </div>
+            <div className="bg-white/5 rounded-lg p-4">
+              <h3 className="font-semibold text-white mb-2">Session Feedback</h3>
+              <div className="space-y-2 text-sm">
+                <div className="flex items-center gap-2">
+                  <span className="bg-blue-500/20 text-blue-300 px-2 py-1 rounded text-xs">POST</span>
+                  <code className="text-gray-300">/api/sessions/[id]/feedback</code>
+                  <span className="text-gray-400">- Submit detailed feedback</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="bg-green-500/20 text-green-300 px-2 py-1 rounded text-xs">GET</span>
+                  <code className="text-gray-300">/api/sessions/[id]/feedback</code>
+                  <span className="text-gray-400">- Retrieve session feedback</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </GlassCard>
       </div>
-
-      {/* Implementation Highlights */}
-      <GlassCard className="p-6">
-        <h2 className="text-2xl font-bold text-white mb-4">Implementation Highlights</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <div className="space-y-2">
-            <h3 className="text-lg font-semibold text-white">🏗️ Architecture</h3>
-            <ul className="text-sm text-gray-300 space-y-1">
-              <li>• RESTful API endpoints for all analytics</li>
-              <li>• Comprehensive service layer with business logic</li>
-              <li>• Type-safe interfaces and data models</li>
-              <li>• Efficient database queries with pagination</li>
-            </ul>
-          </div>
-          <div className="space-y-2">
-            <h3 className="text-lg font-semibold text-white">🎨 User Experience</h3>
-            <ul className="text-sm text-gray-300 space-y-1">
-              <li>• Responsive glassmorphism design</li>
-              <li>• Interactive charts and visualizations</li>
-              <li>• Real-time data updates</li>
-              <li>• Intuitive filtering and search</li>
-            </ul>
-          </div>
-          <div className="space-y-2">
-            <h3 className="text-lg font-semibold text-white">🔧 Technical Features</h3>
-            <ul className="text-sm text-gray-300 space-y-1">
-              <li>• Comprehensive test coverage</li>
-              <li>• Error handling and validation</li>
-              <li>• Performance optimization</li>
-              <li>• Scalable data processing</li>
-            </ul>
-          </div>
-        </div>
-      </GlassCard>
-
-      {/* API Endpoints */}
-      <GlassCard className="p-6">
-        <h2 className="text-2xl font-bold text-white mb-4">API Endpoints</h2>
-        <div className="space-y-4">
-          <div className="bg-white/5 rounded-lg p-4">
-            <h3 className="font-semibold text-white mb-2">Session Analytics</h3>
-            <div className="space-y-2 text-sm">
-              <div className="flex items-center gap-2">
-                <span className="bg-green-500/20 text-green-300 px-2 py-1 rounded text-xs">GET</span>
-                <code className="text-gray-300">/api/sessions/analytics</code>
-                <span className="text-gray-400">- Comprehensive user analytics</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="bg-green-500/20 text-green-300 px-2 py-1 rounded text-xs">GET</span>
-                <code className="text-gray-300">/api/sessions/insights</code>
-                <span className="text-gray-400">- Personalized learning insights</span>
-              </div>
-            </div>
-          </div>
-          <div className="bg-white/5 rounded-lg p-4">
-            <h3 className="font-semibold text-white mb-2">Session History</h3>
-            <div className="space-y-2 text-sm">
-              <div className="flex items-center gap-2">
-                <span className="bg-green-500/20 text-green-300 px-2 py-1 rounded text-xs">GET</span>
-                <code className="text-gray-300">/api/sessions/history</code>
-                <span className="text-gray-400">- Searchable session history</span>
-              </div>
-            </div>
-          </div>
-          <div className="bg-white/5 rounded-lg p-4">
-            <h3 className="font-semibold text-white mb-2">Session Feedback</h3>
-            <div className="space-y-2 text-sm">
-              <div className="flex items-center gap-2">
-                <span className="bg-blue-500/20 text-blue-300 px-2 py-1 rounded text-xs">POST</span>
-                <code className="text-gray-300">/api/sessions/[id]/feedback</code>
-                <span className="text-gray-400">- Submit detailed feedback</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="bg-green-500/20 text-green-300 px-2 py-1 rounded text-xs">GET</span>
-                <code className="text-gray-300">/api/sessions/[id]/feedback</code>
-                <span className="text-gray-400">- Retrieve session feedback</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </GlassCard>
     </div>
-    </div >
   );
 }

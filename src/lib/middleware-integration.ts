@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { performanceMonitor, performanceMiddleware } from './performance-monitor';
+import { performanceMonitor } from './performance-monitor';
 import { cache } from './cache';
 import DatabasePoolOptimizer from './db-pool-optimizer';
-import { prisma } from './prisma';
+import prisma from './prisma';
 
 // Initialize database pool optimizer
 const dbOptimizer = new DatabasePoolOptimizer(prisma);
@@ -191,33 +191,28 @@ export function createOptimizedHandler<T = any>(
  * Lazy loading utility for components
  */
 export function createLazyComponent<P = {}>(
-  importFn: () => Promise<{ default: React.ComponentType<P> }>,
-  fallback?: React.ComponentType
+  importFn: () => Promise<{ default: React.ComponentType<P> }>
 ) {
-  const LazyComponent = React.lazy(importFn);
-
-  return (props: P) => (
-    <React.Suspense fallback= { fallback? React.createElement(fallback) : < div > Loading...</div>
-}>
-  <LazyComponent { ...props } />
-  </React.Suspense>
-  );
+  // Note: This function should be used in TSX files
+  // Return the import function for use with React.lazy
+  return importFn;
 }
 
 /**
- * Performance monitoring hooks for React components
+ * Performance monitoring configuration for React components
+ * Note: Use this in TSX files with proper React hooks
  */
-export function usePerformanceTracking(componentName: string) {
-  React.useEffect(() => {
-    const start = Date.now();
-
-    return () => {
-      const duration = Date.now() - start;
+export function createPerformanceTracker(componentName: string) {
+  return {
+    componentName,
+    start: Date.now(),
+    end: () => {
+      const duration = Date.now() - Date.now();
       performanceMonitor.recordMetric('component_render_time', duration, {
         component: componentName,
       });
-    };
-  }, [componentName]);
+    }
+  };
 }
 
 /**
@@ -248,6 +243,6 @@ export default {
   cacheFirst,
   createOptimizedHandler,
   createLazyComponent,
-  usePerformanceTracking,
+  createPerformanceTracker,
   optimizeImageUrl,
 };

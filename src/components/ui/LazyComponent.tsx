@@ -1,6 +1,6 @@
 import React, { Suspense, lazy } from 'react';
 import { useIntersectionObserver } from '@/hooks/useIntersectionObserver';
-import LoadingSkeleton from './LoadingSkeleton';
+import { LoadingSkeleton } from './LoadingSkeleton';
 
 interface LazyComponentProps {
   children: React.ReactNode;

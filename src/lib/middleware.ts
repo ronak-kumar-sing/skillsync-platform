@@ -184,7 +184,7 @@ export function corsMiddleware(request: NextRequest): NextResponse | null {
  * Enhanced security headers middleware
  */
 export function securityHeadersMiddleware(request: NextRequest): Record<string, string> {
-  const headers = { ...SecurityHeaders.additionalHeaders };
+  const headers: Record<string, string> = { ...SecurityHeaders.additionalHeaders };
 
   // Add CSP header
   const cspDirectives = Object.entries(SecurityHeaders.contentSecurityPolicy.directives)
@@ -222,6 +222,55 @@ export function getClientIP(request: NextRequest): string {
   }
 
   return (request as any).ip || 'unknown';
+}
+
+/**
+ * Simple rate limiting middleware for API routes
+ */
+const rateLimitMap = new Map<string, { count: number; resetTime: number }>();
+
+export function rateLimitMiddleware(
+  key: string,
+  maxAttempts: number,
+  windowMs: number
+): boolean {
+  const now = Date.now();
+  const record = rateLimitMap.get(key);
+
+  if (!record || now > record.resetTime) {
+    rateLimitMap.set(key, { count: 1, resetTime: now + windowMs });
+    return true;
+  }
+
+  if (record.count >= maxAttempts) {
+    return false;
+  }
+
+  record.count++;
+  return true;
+}
+
+/**
+ * Sanitize request body to prevent XSS and injection attacks
+ */
+export function sanitizeRequestBody(body: any): any {
+  if (typeof body === 'string') {
+    return body.replace(/<[^>]*>/g, '').replace(/[<>'"]/g, '');
+  }
+
+  if (Array.isArray(body)) {
+    return body.map(item => sanitizeRequestBody(item));
+  }
+
+  if (body && typeof body === 'object') {
+    const sanitized: any = {};
+    for (const [key, value] of Object.entries(body)) {
+      sanitized[key] = sanitizeRequestBody(value);
+    }
+    return sanitized;
+  }
+
+  return body;
 }
 
 /**
