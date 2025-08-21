@@ -1,0 +1,226 @@
+@import "tailwindcss/preflight";
+@import "tailwindcss/utilities";
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 221.2 83.2% 53.3%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 222.2 84% 4.9%;
+    --muted: 210 40% 96%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96%;
+    --accent-foreground: 222.2 84% 4.9%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 221.2 83.2% 53.3%;
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 217.2 91.2% 59.8%;
+    --primary-foreground: 222.2 84% 4.9%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 224.3 76.3% 94.1%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+@layer components {
+
+  /* Glassmorphism Base Classes */
+  .glass {
+    @apply backdrop-blur-md bg-white/10 border border-white/20;
+  }
+
+  .glass-light {
+    @apply backdrop-blur-lg bg-white/20 border border-white/30;
+  }
+
+  .glass-medium {
+    @apply backdrop-blur-xl bg-white/15 border border-white/25;
+  }
+
+  .glass-dark {
+    @apply backdrop-blur-2xl bg-black/10 border border-white/10;
+  }
+
+  /* Glassmorphism Card Variants */
+  .glass-card {
+    @apply glass rounded-2xl shadow-glass p-6;
+  }
+
+  .glass-card-light {
+    @apply glass-light rounded-2xl shadow-glass p-6;
+  }
+
+  .glass-card-medium {
+    @apply glass-medium rounded-2xl shadow-glass p-6;
+  }
+
+  .glass-card-dark {
+    @apply glass-dark rounded-2xl shadow-glass p-6;
+  }
+
+  /* Interactive Glass Elements */
+  .glass-button {
+    @apply glass rounded-xl px-4 py-2 transition-all duration-200 hover:bg-white/20 hover:shadow-lg active:scale-95;
+  }
+
+  .glass-input {
+    @apply glass rounded-lg px-4 py-2 placeholder:text-white/60 focus:outline-none focus:ring-2 focus:ring-white/30;
+  }
+
+  /* Navigation Glass */
+  .glass-nav {
+    @apply glass-light rounded-full px-6 py-3 shadow-glass;
+  }
+
+  /* Modal Glass */
+  .glass-modal {
+    @apply glass-medium rounded-3xl shadow-2xl p-8 max-w-md mx-auto;
+  }
+
+  /* Sidebar Glass */
+  .glass-sidebar {
+    @apply glass-dark h-full w-64 p-6 shadow-glass;
+  }
+
+  /* Header Glass */
+  .glass-header {
+    @apply glass-light w-full px-6 py-4 shadow-glass;
+  }
+
+  /* Floating Action Button */
+  .glass-fab {
+    @apply glass rounded-full p-4 shadow-glass hover:shadow-xl transition-all duration-200 hover:scale-105;
+  }
+
+  /* Notification Glass */
+  .glass-notification {
+    @apply glass-light rounded-2xl p-4 shadow-glass border-l-4;
+  }
+
+  /* Progress Bar Glass */
+  .glass-progress {
+    @apply glass rounded-full h-2 overflow-hidden;
+  }
+
+  .glass-progress-fill {
+    @apply bg-gradient-to-r from-primary-400 to-primary-600 h-full rounded-full transition-all duration-300;
+  }
+
+  /* Tooltip Glass */
+  .glass-tooltip {
+    @apply glass-dark rounded-lg px-3 py-2 text-sm shadow-glass;
+  }
+
+  /* Badge Glass */
+  .glass-badge {
+    @apply glass rounded-full px-3 py-1 text-xs font-medium;
+  }
+
+  /* Divider Glass */
+  .glass-divider {
+    @apply h-px bg-gradient-to-r from-transparent via-white/30 to-transparent;
+  }
+}
+
+@layer utilities {
+
+  /* Animation Utilities */
+  .animate-fade-in {
+    animation: fadeIn 0.5s ease-in-out;
+  }
+
+  .animate-slide-up {
+    animation: slideUp 0.3s ease-out;
+  }
+
+  .animate-slide-down {
+    animation: slideDown 0.3s ease-out;
+  }
+
+  .animate-scale-in {
+    animation: scaleIn 0.2s ease-out;
+  }
+
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  /* Gradient Utilities */
+  .gradient-primary {
+    @apply bg-gradient-to-r from-primary-500 to-primary-600;
+  }
+
+  .gradient-secondary {
+    @apply bg-gradient-to-r from-secondary-500 to-secondary-600;
+  }
+
+  .gradient-accent {
+    @apply bg-gradient-to-r from-accent-500 to-accent-600;
+  }
+
+  .gradient-glass {
+    @apply bg-gradient-to-br from-white/20 to-white/5;
+  }
+
+  /* Text Gradient Utilities */
+  .text-gradient-primary {
+    @apply bg-gradient-to-r from-primary-500 to-primary-600 bg-clip-text text-transparent;
+  }
+
+  .text-gradient-secondary {
+    @apply bg-gradient-to-r from-secondary-500 to-secondary-600 bg-clip-text text-transparent;
+  }
+
+  .text-gradient-accent {
+    @apply bg-gradient-to-r from-accent-500 to-accent-600 bg-clip-text text-transparent;
+  }
+
+  /* Shadow Utilities */
+  .shadow-glass-sm {
+    box-shadow: 0 4px 16px 0 rgba(31, 38, 135, 0.2);
+  }
+
+  .shadow-glass-lg {
+    box-shadow: 0 12px 48px 0 rgba(31, 38, 135, 0.4);
+  }
+
+  .shadow-glass-xl {
+    box-shadow: 0 20px 64px 0 rgba(31, 38, 135, 0.5);
+  }
+}

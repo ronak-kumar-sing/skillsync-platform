@@ -1,36 +1,106 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# SkillSync Platform
 
-## Getting Started
+A comprehensive skill-sharing and mentorship platform built with Next.js 14, TypeScript, and Tailwind CSS.
 
-First, run the development server:
+## Project Structure
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+```
+src/
+├── app/                    # Next.js 14 App Router
+├── components/             # React components
+│   ├── ui/                # Reusable UI components
+│   ├── layout/            # Layout components
+│   └── features/          # Feature-specific components
+├── hooks/                 # Custom React hooks
+├── services/              # API services and data fetching
+├── styles/                # Global styles and Tailwind config
+├── types/                 # TypeScript type definitions
+└── utils/                 # Utility functions and helpers
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Tech Stack
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **Framework**: Next.js 14 with App Router
+- **Language**: TypeScript (strict mode)
+- **Styling**: Tailwind CSS with glassmorphism design system
+- **State Management**: Zustand
+- **Forms**: React Hook Form with Joi validation
+- **HTTP Client**: TanStack Query
+- **Real-time**: Socket.IO
+- **Authentication**: JWT with bcryptjs
+- **Animations**: Framer Motion
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Design System
 
-## Learn More
+The project uses a glassmorphism design system with:
 
-To learn more about Next.js, take a look at the following resources:
+- Custom glass components and utilities
+- Consistent color palette with primary, secondary, and accent colors
+- Smooth animations and transitions
+- Responsive design patterns
+- Accessibility-first approach
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Development
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Prerequisites
 
-## Deploy on Vercel
+- Node.js 18+
+- npm or yarn
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Getting Started
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+2. Run the development server:
+   ```bash
+   npm run dev
+   ```
+
+3. Open [http://localhost:3000](http://localhost:3000) in your browser
+
+### Available Scripts
+
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run start` - Start production server
+- `npm run lint` - Run ESLint
+- `npm run lint:fix` - Fix ESLint issues
+- `npm run format` - Format code with Prettier
+- `npm run format:check` - Check code formatting
+- `npm run type-check` - Run TypeScript type checking
+
+## Code Quality
+
+The project enforces code quality through:
+
+- **ESLint**: Configured with Next.js, TypeScript, and Prettier rules
+- **Prettier**: Consistent code formatting with Tailwind CSS plugin
+- **TypeScript**: Strict mode with comprehensive type checking
+- **Husky**: Git hooks for pre-commit checks (to be configured)
+
+## Glassmorphism Components
+
+The design system includes pre-built glassmorphism components:
+
+- `.glass-card` - Basic glass card
+- `.glass-button` - Interactive glass button
+- `.glass-input` - Glass input field
+- `.glass-nav` - Navigation glass
+- `.glass-modal` - Modal glass
+- `.glass-sidebar` - Sidebar glass
+- And many more utility classes
+
+## Contributing
+
+1. Follow the established project structure
+2. Use TypeScript for all new files
+3. Follow the glassmorphism design patterns
+4. Write meaningful commit messages
+5. Ensure all linting and type checks pass
+
+## License
+
+This project is private and proprietary.

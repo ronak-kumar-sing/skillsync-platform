@@ -1,0 +1,201 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+// Users collection with comprehensive profile data
+model User {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  email        String   @unique
+  username     String   @unique
+  passwordHash String   @map("password_hash")
+  avatarUrl    String?  @map("avatar_url")
+  timezone     String
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+  lastActive   DateTime @default(now()) @map("last_active")
+  isVerified   Boolean  @default(false) @map("is_verified")
+  isActive     Boolean  @default(true) @map("is_active")
+
+  // Relations
+  userSkills         UserSkill[]
+  initiatedSessions  Session[]         @relation("SessionInitiator")
+  partnerSessions    Session[]         @relation("SessionPartner")
+  userAchievements   UserAchievement[]
+  matchingQueue      MatchingQueue[]
+  learningGoals      LearningGoal[]
+  userPreferences    UserPreference?
+
+  @@map("users")
+}
+
+// Skills taxonomy
+model Skill {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  name        String   @unique
+  category    String
+  description String?
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  // Relations
+  userSkills UserSkill[]
+
+  @@map("skills")
+}
+
+// User skill associations with proficiency levels
+model UserSkill {
+  id               String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId           String   @map("user_id") @db.ObjectId
+  skillId          String   @map("skill_id") @db.ObjectId
+  proficiencyLevel Int      @map("proficiency_level")
+  verified         Boolean  @default(false)
+  endorsements     Int      @default(0)
+  createdAt        DateTime @default(now()) @map("created_at")
+
+  // Relations
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  skill Skill @relation(fields: [skillId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, skillId])
+  @@map("user_skills")
+}
+
+// Learning goals for users
+model LearningGoal {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId      String   @map("user_id") @db.ObjectId
+  title       String
+  description String?
+  targetDate  DateTime? @map("target_date")
+  priority    String   @default("medium") // low, medium, high
+  status      String   @default("active") // active, completed, paused
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("learning_goals")
+}
+
+// User preferences for matching and communication
+model UserPreference {
+  id                    String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId                String   @unique @map("user_id") @db.ObjectId
+  preferredSessionTypes String[] @map("preferred_session_types") // learning, teaching, collaboration
+  maxSessionDuration    Int      @default(60) @map("max_session_duration") // minutes
+  communicationStyle    String   @default("balanced") @map("communication_style")
+  availabilitySchedule  Json     @map("availability_schedule") // JSON object with weekly schedule
+  languagePreferences   String[] @default(["en"]) @map("language_preferences")
+  createdAt             DateTime @default(now()) @map("created_at")
+  updatedAt             DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("user_preferences")
+}
+
+// Learning sessions and matching history
+model Session {
+  id                String    @id @default(auto()) @map("_id") @db.ObjectId
+  initiatorId       String    @map("initiator_id") @db.ObjectId
+  partnerId         String    @map("partner_id") @db.ObjectId
+  startTime         DateTime  @map("start_time")
+  endTime           DateTime? @map("end_time")
+  durationMinutes   Int?      @map("duration_minutes")
+  sessionType       String    @map("session_type") // learning, teaching, collaboration
+  topics            String[]
+  ratingInitiator   Int?      @map("rating_initiator")
+  ratingPartner     Int?      @map("rating_partner")
+  feedbackInitiator String?   @map("feedback_initiator")
+  feedbackPartner   String?   @map("feedback_partner")
+  status            String    @default("scheduled") // scheduled, active, completed, cancelled
+  createdAt         DateTime  @default(now()) @map("created_at")
+
+  // Relations
+  initiator User @relation("SessionInitiator", fields: [initiatorId], references: [id], onDelete: Cascade)
+  partner   User @relation("SessionPartner", fields: [partnerId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+// Achievements and gamification
+model Achievement {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  description String
+  iconUrl     String?  @map("icon_url")
+  category    String
+  points      Int      @default(0)
+  rarity      String   // common, rare, epic, legendary
+  criteria    Json     // JSON object defining achievement criteria
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  // Relations
+  userAchievements UserAchievement[]
+
+  @@map("achievements")
+}
+
+// User achievement tracking
+model UserAchievement {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId        String   @map("user_id") @db.ObjectId
+  achievementId String   @map("achievement_id") @db.ObjectId
+  earnedAt      DateTime @default(now()) @map("earned_at")
+  progress      Json?    // JSON object for tracking progress towards achievement
+
+  // Relations
+  user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  achievement Achievement @relation(fields: [achievementId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, achievementId])
+  @@map("user_achievements")
+}
+
+// Matching queue and preferences
+model MatchingQueue {
+  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId         String   @map("user_id") @db.ObjectId
+  preferredSkills String[] @map("preferred_skills")
+  sessionType    String   @map("session_type")
+  maxDuration    Int      @map("max_duration")
+  urgency        String   // low, medium, high
+  status         String   @default("waiting") // waiting, matched, expired, cancelled
+  createdAt      DateTime @default(now()) @map("created_at")
+  expiresAt      DateTime @map("expires_at")
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("matching_queue")
+}
+
+// User statistics for analytics and gamification
+model UserStats {
+  id                    String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId                String   @unique @map("user_id") @db.ObjectId
+  totalSessions         Int      @default(0) @map("total_sessions")
+  totalMinutesLearned   Int      @default(0) @map("total_minutes_learned")
+  averageRating         Float?   @map("average_rating")
+  skillsLearned         Int      @default(0) @map("skills_learned")
+  skillsTaught          Int      @default(0) @map("skills_taught")
+  achievementPoints     Int      @default(0) @map("achievement_points")
+  currentStreak         Int      @default(0) @map("current_streak")
+  longestStreak         Int      @default(0) @map("longest_streak")
+  lastSessionDate       DateTime? @map("last_session_date")
+  createdAt             DateTime @default(now()) @map("created_at")
+  updatedAt             DateTime @updatedAt @map("updated_at")
+
+  @@map("user_stats")
+}
