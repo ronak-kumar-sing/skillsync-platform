@@ -120,7 +120,16 @@ export function PerformanceProvider({ children }: PerformanceProviderProps) {
 export const usePerformance = () => {
   const context = useContext(PerformanceContext);
   if (context === undefined) {
-    throw new Error('usePerformance must be used within a PerformanceProvider');
+    // Return default values when provider is not available
+    // This allows components to work in error boundaries or during initialization
+    return {
+      isLowPerformance: false,
+      connectionSpeed: 'unknown' as const,
+      enableAnimations: true,
+      enableBlur: true,
+      enableShadows: true,
+      optimizeImages: false,
+    };
   }
   return context;
 };

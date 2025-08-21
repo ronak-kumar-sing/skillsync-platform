@@ -104,43 +104,64 @@ export async function GET(request: NextRequest) {
     // Calculate skills improved (mock calculation based on recent sessions)
     const skillsImproved = Math.min(userSkills.length, totalSessionsThisWeek);
 
-    // Process skill progress
-    const skillProgress = userSkills.slice(0, 5).map(userSkill => {
-      // Mock progress calculation based on proficiency level and recent activity
-      const baseProgress = (userSkill.proficiencyLevel - 1) * 25; // 0, 25, 50, 75, 100
-      const sessionBonus = Math.min(20, totalSessionsThisWeek * 4); // Up to 20% bonus
-      const progress = Math.min(100, baseProgress + sessionBonus);
+    // Generate weekly progress data (last 8 weeks)
+    const weeklyProgress = Array.from({ length: 8 }, (_, index) => {
+      const weekDate = new Date();
+      weekDate.setDate(weekDate.getDate() - (index * 7));
+      const weekString = `${weekDate.getMonth() + 1}/${weekDate.getDate()}`;
+
+      // Mock data with some variation
+      const baseSessions = Math.max(0, totalSessionsThisWeek - index);
+      const sessions = baseSessions + Math.floor(Math.random() * 3);
+      const minutes = sessions * (45 + Math.floor(Math.random() * 30)); // 45-75 min per session
+      const rating = 4.0 + Math.random(); // 4.0-5.0 rating
 
       return {
-        id: userSkill.id,
-        name: userSkill.skill.name,
-        category: userSkill.skill.category,
-        currentLevel: userSkill.proficiencyLevel,
-        targetLevel: Math.min(5, userSkill.proficiencyLevel + 1),
-        progress,
-        sessionsCount: weeklySessionsData.filter(session =>
-          session.topics?.includes(userSkill.skill.name)
-        ).length,
-        lastPracticed: weeklySessionsData
-          .filter(session => session.topics?.includes(userSkill.skill.name))
-          .sort((a, b) => new Date(b.startTime).getTime() - new Date(a.startTime).getTime())[0]?.startTime
+        week: weekString,
+        sessions: Math.min(sessions, 10),
+        minutes,
+        rating: parseFloat(rating.toFixed(1))
       };
-    });
+    }).reverse();
 
-    // Calculate weekly goal progress
-    const weeklyGoalProgress = weeklyGoal.target > 0
-      ? Math.min(100, (totalSessionsThisWeek / weeklyGoal.target) * 100)
-      : 0;
+    // Generate skill breakdown data
+    const skillBreakdown = userSkills.slice(0, 5).map(userSkill => ({
+      skill: userSkill.skill.name,
+      sessionsCount: weeklySessionsData.filter(session =>
+        session.topics?.includes(userSkill.skill.name)
+      ).length + Math.floor(Math.random() * 5),
+      averageRating: 4.0 + Math.random(),
+      hoursSpent: (Math.random() * 20) + 5, // 5-25 hours
+      lastPracticed: weeklySessionsData
+        .filter(session => session.topics?.includes(userSkill.skill.name))
+        .sort((a, b) => new Date(b.startTime).getTime() - new Date(a.startTime).getTime())[0]?.startTime ||
+        new Date(Date.now() - Math.random() * 7 * 24 * 60 * 60 * 1000).toISOString()
+    }));
 
     const analytics = {
-      totalSessionsThisWeek,
-      totalMinutesThisWeek,
+      totalSessions: (userStats?.totalSessions || 0) + totalSessionsThisWeek,
+      totalMinutesLearned: (userStats?.totalMinutesLearned || 0) + totalMinutesThisWeek,
       averageRating,
-      skillsImproved,
+      skillsLearned: Math.floor(userSkills.length * 0.7), // 70% of skills are "learned"
+      skillsTaught: Math.floor(userSkills.length * 0.3), // 30% of skills are "taught"
       currentStreak: userStats?.currentStreak || 0,
       longestStreak: userStats?.longestStreak || 0,
-      weeklyGoalProgress,
-      skillProgress,
+      weeklyProgress,
+      skillBreakdown,
+      monthlyGoals: {
+        sessions: {
+          target: weeklyGoal.target * 4, // Monthly = weekly * 4
+          current: totalSessionsThisWeek * 4 // Approximate monthly based on current week
+        },
+        skills: {
+          target: 3, // Learn 3 new skills per month
+          current: skillsImproved
+        },
+        minutes: {
+          target: 1200, // 20 hours per month
+          current: totalMinutesThisWeek * 4 // Approximate monthly
+        }
+      }
     };
 
     return NextResponse.json({
