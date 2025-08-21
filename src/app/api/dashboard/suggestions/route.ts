@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { verifyToken } from '@/lib/auth';
+import { verifyAccessToken } from '@/lib/auth';
 import prisma from '@/lib/prisma';
 
 /**
@@ -16,7 +16,7 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    const decoded = verifyToken(token);
+    const decoded = verifyAccessToken(token);
     if (!decoded) {
       return NextResponse.json(
         { error: 'Invalid token' },
@@ -31,14 +31,14 @@ export async function GET(request: NextRequest) {
     const currentUser = await prisma.user.findUnique({
       where: { id: userId },
       include: {
-        skills: {
+        userSkills: {
           include: {
             skill: {
               select: { name: true, category: true }
             }
           }
         },
-        preferences: true
+        userPreferences: true
       }
     });
 
@@ -49,15 +49,15 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    const userSkillNames = currentUser.skills.map(us => us.skill.name);
-    const userSkillCategories = [...new Set(currentUser.skills.map(us => us.skill.category))];
+    const userSkillNames = currentUser.userSkills.map(us => us.skill.name);
+    const userSkillCategories = [...new Set(currentUser.userSkills.map(us => us.skill.category))];
 
     // Find potential connections
     const potentialConnections = await prisma.user.findMany({
       where: {
         id: { not: userId },
         isActive: true,
-        skills: {
+        userSkills: {
           some: {
             skill: {
               OR: [
@@ -75,7 +75,7 @@ export async function GET(request: NextRequest) {
         }
       },
       include: {
-        skills: {
+        userSkills: {
           include: {
             skill: {
               select: { name: true, category: true }
@@ -88,7 +88,7 @@ export async function GET(request: NextRequest) {
 
     // Calculate compatibility scores and format suggestions
     const suggestions = potentialConnections.map(user => {
-      const userSkills = user.skills.map(us => us.skill.name);
+      const userSkills = user.userSkills.map(us => us.skill.name);
       const commonSkills = userSkills.filter(skill => userSkillNames.includes(skill));
       const complementarySkills = userSkills.filter(skill => !userSkillNames.includes(skill));
 

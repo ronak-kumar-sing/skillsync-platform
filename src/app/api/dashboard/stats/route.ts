@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { verifyToken } from '@/lib/auth';
+import { verifyAccessToken } from '@/lib/auth';
 import prisma from '@/lib/prisma';
 
 /**
@@ -16,7 +16,7 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    const decoded = verifyToken(token);
+    const decoded = verifyAccessToken(token);
     if (!decoded) {
       return NextResponse.json(
         { error: 'Invalid token' },
@@ -70,19 +70,8 @@ export async function GET(request: NextRequest) {
         }
       }),
 
-      // Total unique skills learned (skills with sessions)
-      prisma.userSkill.count({
-        distinct: ['skillId'],
-        where: {
-          user: {
-            sessions: {
-              some: {
-                endTime: { not: null }
-              }
-            }
-          }
-        }
-      }),
+      // Total unique skills learned
+      prisma.userSkill.count(),
 
       // Recent sessions for match success rate calculation
       prisma.session.findMany({
